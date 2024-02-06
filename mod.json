@@ -1,10 +1,17 @@
 {
   "geode": "2.0.0",
   "gd": "2.204",
-  "version": "v1.0.0",
+  "version": "v1.0.1",
   "id": "ninkaz.blending_glow",
   "name": "Blending Glow",
   "developer": "NinKaz",
   "description": "Changes player glow to be blending.",
-  "repository": "https://github.com/flurrybun/blending-glow"
+  "repository": "https://github.com/flurrybun/blending-glow",
+  "dependencies": [
+    {
+      "id": "geode.node-ids",
+      "version": ">=v1.2.3",
+      "importance": "required"
+    }
+  ]
 }
