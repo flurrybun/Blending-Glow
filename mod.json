@@ -1,7 +1,12 @@
 {
   "geode": "2.0.0",
-  "gd": "2.204",
-  "version": "v1.0.1",
+  "gd": {
+    "mac": "*",
+    "ios": "*",
+    "android": "*",
+    "win": "*"
+  },
+  "version": "v1.1.0",
   "id": "ninkaz.blending_glow",
   "name": "Blending Glow",
   "developer": "NinKaz",
