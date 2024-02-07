@@ -1,10 +1,9 @@
 {
   "geode": "2.0.0",
   "gd": {
-    "mac": "*",
-    "ios": "*",
-    "android": "*",
-    "win": "*"
+    "win": "2.204",
+    "android": "2.205",
+    "mac": "2.200"
   },
   "version": "v1.1.0",
   "id": "ninkaz.blending_glow",
