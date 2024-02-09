@@ -5,17 +5,10 @@
     "android": "2.205",
     "mac": "2.200"
   },
-  "version": "v1.1.0",
+  "version": "v1.1.2",
   "id": "ninkaz.blending_glow",
   "name": "Blending Glow",
   "developer": "NinKaz",
-  "description": "Changes player glow to be blending.",
-  "repository": "https://github.com/flurrybun/blending-glow",
-  "dependencies": [
-    {
-      "id": "geode.node-ids",
-      "version": ">=v1.2.3",
-      "importance": "required"
-    }
-  ]
+  "description": "Makes player glow blending.",
+  "repository": "https://github.com/flurrybun/blending-glow"
 }
