@@ -11,15 +11,6 @@ class $modify(PlayerObject) {
 
         if (m_hasGlow == false) return;
 
-        if (isBrighterGlow) {
-            int r = std::min(static_cast<int>(m_glowColor.r * 1.5), 255);
-            int g = std::min(static_cast<int>(m_glowColor.g * 1.5), 255);
-            int b = std::min(static_cast<int>(m_glowColor.b * 1.5), 255);
-            
-            m_glowColor = ccc3(r, g, b);
-            updateGlowColor();
-        }
-
         ccBlendFunc blendFunc = {GL_ONE, GL_ONE_MINUS_CONSTANT_ALPHA};
 
         auto iconGlow = m_iconGlow;
@@ -27,5 +18,20 @@ class $modify(PlayerObject) {
 
         if (iconGlow) iconGlow->setBlendFunc(blendFunc);
         if (vehicleGlow) vehicleGlow->setBlendFunc(blendFunc);
+    }
+
+    void updateGlowColor() {
+        if (isBrighterGlow) {
+            auto gm = GameManager::sharedState();
+            auto glowColor = gm->colorForIdx(gm->getPlayerGlowColor());
+            
+            int r = std::min(static_cast<int>(glowColor.r * 1.5), 255);
+            int g = std::min(static_cast<int>(glowColor.g * 1.5), 255);
+            int b = std::min(static_cast<int>(glowColor.b * 1.5), 255);
+            
+            m_glowColor = ccc3(r, g, b);
+        }
+
+        PlayerObject::updateGlowColor();
     }
 };
