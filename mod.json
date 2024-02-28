@@ -11,6 +11,12 @@
   "description": "Makes player glow blending.",
   "repository": "https://github.com/flurrybun/blending-glow",
   "settings": {
+    "blending-glow": {
+      "name": "Blending Glow",
+      "description": "Makes the player glow blending. Disabling this also disables Brighter Glow.",
+      "type": "bool",
+      "default": true
+    },
     "brighter-glow": {
       "name": "Brighter Glow",
       "description": "Increases glow brightness by 1.5x to emulate the glow color pre-2.2.",

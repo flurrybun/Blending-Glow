@@ -7,7 +7,8 @@ class $modify(PlayerObject) {
     void updatePlayerArt() {
         PlayerObject::updatePlayerArt();
 
-        if (m_hasGlow == false) return;
+        bool isBlendingGlow = Mod::get()->getSettingValue<bool>("blending-glow");
+        if (!m_hasGlow || !isBlendingGlow) return;
 
         ccBlendFunc blendFunc = {GL_ONE, GL_ONE_MINUS_CONSTANT_ALPHA};
 
@@ -19,9 +20,10 @@ class $modify(PlayerObject) {
     }
 
     void updateGlowColor() {
+        bool isBlendingGlow = Mod::get()->getSettingValue<bool>("blending-glow");
         bool isBrighterGlow = Mod::get()->getSettingValue<bool>("brighter-glow");
         
-        if (isBrighterGlow) {
+        if (isBrighterGlow && isBlendingGlow) {
             auto gm = GameManager::sharedState();
             auto glowColor = gm->colorForIdx(gm->getPlayerGlowColor());
             
