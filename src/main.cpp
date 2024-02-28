@@ -4,8 +4,6 @@
 using namespace geode::prelude;
 
 class $modify(PlayerObject) {
-    bool isBrighterGlow = Mod::get()->getSettingValue<bool>("brighter-glow");
-    
     void updatePlayerArt() {
         PlayerObject::updatePlayerArt();
 
@@ -21,6 +19,8 @@ class $modify(PlayerObject) {
     }
 
     void updateGlowColor() {
+        bool isBrighterGlow = Mod::get()->getSettingValue<bool>("brighter-glow");
+        
         if (isBrighterGlow) {
             auto gm = GameManager::sharedState();
             auto glowColor = gm->colorForIdx(gm->getPlayerGlowColor());
