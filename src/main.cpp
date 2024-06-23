@@ -22,11 +22,8 @@ class $modify(PlayerObject) {
     void updateGlowColor() {
         bool isBlendingGlow = Mod::get()->getSettingValue<bool>("blending-glow");
         bool isBrighterGlow = Mod::get()->getSettingValue<bool>("brighter-glow");
-
-        auto gm = GameManager::sharedState();
-        bool isBaseLayer = gm->getEditorLayer() != nullptr || gm->getPlayLayer() != nullptr;
         
-        if (isBrighterGlow && isBlendingGlow && isBaseLayer) {
+        if (isBrighterGlow && isBlendingGlow) {
             auto gm = GameManager::sharedState();
             auto glowColor = gm->colorForIdx(gm->getPlayerGlowColor());
             
