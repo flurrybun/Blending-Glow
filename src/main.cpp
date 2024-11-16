@@ -3,12 +3,14 @@
 
 using namespace geode::prelude;
 
-class $modify(PlayerObject) {
+class $modify(ModPlayerObject, PlayerObject) {
+    struct Fields {
+        CCSprite* m_robotSpiderGlow = nullptr;
+    };
+
     void updatePlayerArt() {
         PlayerObject::updatePlayerArt();
-
-        bool isBlendingGlow = Mod::get()->getSettingValue<bool>("blending-glow");
-        if (!m_hasGlow || !isBlendingGlow) return;
+        if (!m_hasGlow || !Mod::get()->getSettingValue<bool>("blending-glow")) return;
 
         ccBlendFunc blendFunc = {GL_ONE, GL_ONE_MINUS_CONSTANT_ALPHA};
 
@@ -17,23 +19,75 @@ class $modify(PlayerObject) {
 
         if (iconGlow) iconGlow->setBlendFunc(blendFunc);
         if (vehicleGlow) vehicleGlow->setBlendFunc(blendFunc);
+
+        if (!Mod::get()->getSettingValue<bool>("enable-robot-spider")) return;
+
+        auto selector = schedule_selector(ModPlayerObject::updateRobotGlow);
+
+        if (m_isRobot || m_isSpider) {
+            schedule(selector);
+        } else {
+            unschedule(selector);
+            if (m_fields->m_robotSpiderGlow) m_fields->m_robotSpiderGlow->removeFromParent();
+            m_fields->m_robotSpiderGlow = nullptr;
+        }
     }
 
     void updateGlowColor() {
-        bool isBlendingGlow = Mod::get()->getSettingValue<bool>("blending-glow");
-        bool isBrighterGlow = Mod::get()->getSettingValue<bool>("brighter-glow");
-        
-        if (isBrighterGlow && isBlendingGlow) {
+        if (Mod::get()->getSettingValue<bool>("brighter-glow")) {
             auto gm = GameManager::sharedState();
             auto glowColor = gm->colorForIdx(gm->getPlayerGlowColor());
-            
+
             int r = std::min(static_cast<int>(glowColor.r * 1.5), 255);
             int g = std::min(static_cast<int>(glowColor.g * 1.5), 255);
             int b = std::min(static_cast<int>(glowColor.b * 1.5), 255);
-            
+
             m_glowColor = ccc3(r, g, b);
         }
 
         PlayerObject::updateGlowColor();
+    }
+
+    void updateRobotGlow(float dt) {
+        GJRobotSprite* robotSprite = nullptr;
+        if (m_isRobot) robotSprite = m_robotSprite;
+        else if (m_isSpider) robotSprite = m_spiderSprite;
+        else return;
+
+        // for some reason, trying to use a render texture on the glow sprite itself
+        // causes the limbs in the rendered sprite to be super messed up, so instead we
+        // render the parent batch node and just make everything besides the glow invisible
+
+        auto robotParent = robotSprite->getParent();
+        robotParent->setPosition({40, 40});
+
+        CCArrayExt<CCSpritePart*> robotParts = robotSprite->m_paSprite->m_spriteParts;
+
+        for (auto part : robotParts) {
+            part->setVisible(false);
+        }
+
+        robotSprite->m_glowSprite->setVisible(true);
+
+        auto renderTexture = CCRenderTexture::create(80, 80);
+        renderTexture->begin();
+        robotParent->visit();
+        renderTexture->end();
+
+        robotParent->setPosition({0, 0});
+
+        for (auto part : robotParts) {
+            part->setVisible(true);
+        }
+
+        robotSprite->m_glowSprite->setVisible(false);
+
+        auto sprite = CCSprite::createWithTexture(renderTexture->getSprite()->getTexture());
+        sprite->setFlipY(true);
+        sprite->setBlendFunc({GL_ONE, GL_ONE_MINUS_CONSTANT_ALPHA});
+
+        if (m_fields->m_robotSpiderGlow) m_fields->m_robotSpiderGlow->removeFromParent();
+        m_fields->m_robotSpiderGlow = sprite;
+        m_mainLayer->addChild(sprite);
     }
 };

@@ -1,27 +1,35 @@
 {
-  "geode": "4.0.0-alpha.1",
+  "geode": "4.0.0-beta.1",
   "gd": {
     "win": "2.2074",
     "android": "2.2074",
     "mac": "2.2074"
   },
-  "version": "v1.1.4",
+  "version": "v1.2.0",
   "id": "ninkaz.blending_glow",
   "name": "Blending Glow",
   "developer": "NinKaz",
   "description": "Makes player glow blending.",
-  "repository": "https://github.com/flurrybun/blending-glow",
+  "links": {
+    "source": "https://github.com/flurrybun/blending-glow"
+  },
   "tags": ["customization", "offline"],
   "settings": {
     "blending-glow": {
-      "name": "Enable Blending Glow",
-      "description": "Enables this mod. Disabling this also disables Brighter Glow.",
+      "name": "Blending Glow",
+      "description": "Make the player glow blending.",
+      "type": "bool",
+      "default": true
+    },
+    "enable-robot-spider": {
+      "name": "Enable On Robots & Spiders",
+      "description": "Enables blending glow on robots and spiders, which didn't have blending glow in 2.1.",
       "type": "bool",
       "default": true
     },
     "brighter-glow": {
-      "name": "Increase Brightness",
-      "description": "Increases glow brightness by 50% to emulate the old glow color.",
+      "name": "Increase Glow Brightness",
+      "description": "Increases glow brightness by 50% to emulate the pre-2.2 glow color.",
       "type": "bool",
       "default": false
     }
