@@ -1,10 +1,7 @@
-# <cp>B</c><cr>l</c><co>e</c><cy>n</c><cg>d</c><cj>i</c><cl>n</c><cb>g</c> <cp>G</c><cr>l</c><co>o</c><cy>w</c>
+Change the player's glow to use <cy>blending</c>, like how it looked before 2.2.
 
-Makes player's glow blending, which was changed to be solid in 2.2.
+## Features
 
-Doesn't work on the robot and spider due to technical limitations, but they weren't blending in 2.1 either.
-
-## Options
-
-- <cg>Enable Blending Glow:</c> quickly enable/disable this mod without needing to restart
-- <cy>Increase Brightness:</c> increases glow brightness by 1.5x to emulate the glow color pre-2.2
+- Make player glow blending
+- Also make robot and spider glow blending, which wasn't a thing in 2.1
+- Option to increase glow brightness to match old glow color

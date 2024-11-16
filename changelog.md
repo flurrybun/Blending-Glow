@@ -1,17 +1,19 @@
-# <cp>B</c><cr>l</c><co>e</c><cy>n</c><cg>d</c><cj>i</c><cl>n</c><cb>g</c> <cp>G</c><cr>l</c><co>o</c><cy>w</c> <cg>C</c><cj>h</c><cl>a</c><cb>n</c><cp>g</c><cr>e</c><co>l</c><cy>o</c><cg>g</c>
+## v1.2.0
+
+- Add blending glow to **robots and spiders**!
+- Bump to Geode 4.0.0 and 2.2074
 
 ## v1.1.4
 
-- Fix mod incorrectly configured for M1 Macs
+- Fix incorrect configuration for Apple Silicon Mac version
 
 ## v1.1.3
 
-- Add support for Mac
+- Add Mac support
 
 ## v1.1.2
 
 - Bump to Geode 3.0.0 and 2.206
-- Small changes to description and settings
 
 ## v1.1.1
 
@@ -20,7 +22,7 @@
 
 ## v1.1.0
 
-- Add **Increase Glow Brighness** setting, which increases glow brightness by 50% to emulate the glow color pre-2.2
+- Add **Increase Glow Brightness** setting, which increases glow brightness by 50% to emulate the glow color pre-2.2
 
 ## v1.0.2
 
