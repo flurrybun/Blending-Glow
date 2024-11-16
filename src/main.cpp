@@ -1,5 +1,7 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayerObject.hpp>
+#include <Geode/modify/EditorUI.hpp>
+#include <Geode/modify/MenuGameLayer.hpp>
 
 using namespace geode::prelude;
 
@@ -8,6 +10,7 @@ class $modify(ModPlayerObject, PlayerObject) {
         CCSprite* m_robotSpiderGlow = nullptr;
     };
 
+    $override
     void updatePlayerArt() {
         PlayerObject::updatePlayerArt();
         if (!m_hasGlow || !Mod::get()->getSettingValue<bool>("blending-glow")) return;
@@ -20,19 +23,10 @@ class $modify(ModPlayerObject, PlayerObject) {
         if (iconGlow) iconGlow->setBlendFunc(blendFunc);
         if (vehicleGlow) vehicleGlow->setBlendFunc(blendFunc);
 
-        if (!Mod::get()->getSettingValue<bool>("enable-robot-spider")) return;
-
-        auto selector = schedule_selector(ModPlayerObject::updateRobotGlow);
-
-        if (m_isRobot || m_isSpider) {
-            schedule(selector);
-        } else {
-            unschedule(selector);
-            if (m_fields->m_robotSpiderGlow) m_fields->m_robotSpiderGlow->removeFromParent();
-            m_fields->m_robotSpiderGlow = nullptr;
-        }
+        updateRobotGlowScheduler();
     }
 
+    $override
     void updateGlowColor() {
         if (Mod::get()->getSettingValue<bool>("brighter-glow")) {
             auto gm = GameManager::sharedState();
@@ -46,6 +40,20 @@ class $modify(ModPlayerObject, PlayerObject) {
         }
 
         PlayerObject::updateGlowColor();
+    }
+
+    void updateRobotGlowScheduler() {
+        if (!Mod::get()->getSettingValue<bool>("enable-robot-spider")) return;
+
+        auto selector = schedule_selector(ModPlayerObject::updateRobotGlow);
+
+        if (m_isRobot || m_isSpider) {
+            schedule(selector);
+        } else {
+            unschedule(selector);
+            if (m_fields->m_robotSpiderGlow) m_fields->m_robotSpiderGlow->removeFromParent();
+            m_fields->m_robotSpiderGlow = nullptr;
+        }
     }
 
     void updateRobotGlow(float dt) {
@@ -89,5 +97,33 @@ class $modify(ModPlayerObject, PlayerObject) {
         if (m_fields->m_robotSpiderGlow) m_fields->m_robotSpiderGlow->removeFromParent();
         m_fields->m_robotSpiderGlow = sprite;
         m_mainLayer->addChild(sprite);
+    }
+};
+
+// when the editor playtest is paused, robots & spiders still animate but the scheduler is paused
+// this causes the glow sprite to not update, so we need to manually resume it
+
+class $modify(ModEditorUI, EditorUI) {
+    $override
+    void onPlaytest(CCObject* sender) {
+        EditorUI::onPlaytest(sender);
+        if (!Mod::get()->getSettingValue<bool>("enable-robot-spider")) return;
+
+        auto player1 = LevelEditorLayer::get()->m_player1;
+        if (player1 && (player1->m_isRobot || player1->m_isSpider)) player1->resumeSchedulerAndActions();
+
+        auto player2 = LevelEditorLayer::get()->m_player2;
+        if (player2 && (player2->m_isRobot || player2->m_isSpider)) player2->resumeSchedulerAndActions();
+    }
+};
+
+// when the icon in MenuGameLayer changes modes, it doesn't call PlayerObject::updatePlayerArt
+// so we need to manually update the robot/spider glow sprite
+
+class $modify(ModMenuGameLayer, MenuGameLayer) {
+    $override
+    void resetPlayer() {
+        MenuGameLayer::resetPlayer();
+        static_cast<ModPlayerObject*>(m_playerObject)->updateRobotGlowScheduler();
     }
 };
