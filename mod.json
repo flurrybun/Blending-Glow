@@ -22,10 +22,11 @@
       "default": true
     },
     "enable-robot-spider": {
-      "name": "Enable On Robots & Spiders",
+      "name": "Blending Glow on Robots & Spiders",
       "description": "Enables blending glow on robots and spiders, which didn't have blending glow in 2.1.",
       "type": "bool",
-      "default": true
+      "default": true,
+      "enable-if": "blending-glow"
     },
     "brighter-glow": {
       "name": "Increase Glow Brightness",
